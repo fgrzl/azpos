@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>fgrzl.Azpos</RootNamespace>
+  </PropertyGroup>
+</Project>

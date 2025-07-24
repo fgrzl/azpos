@@ -1,0 +1,4 @@
+# Java specific overrides
+[*.java]
+indent_style = space
+indent_size = 4

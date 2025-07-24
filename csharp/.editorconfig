@@ -1,0 +1,78 @@
+# C# specific overrides
+[*.cs]
+indent_style = space
+indent_size = 4
+
+# Modern idiomatic C# code style and analyzer rules
+# Use file-scoped namespaces
+csharp_style_namespace_declarations = file_scoped:suggestion
+
+# Prefer implicit type for locals when type is apparent
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = true:suggestion
+
+# Prefer expression-bodied members
+csharp_style_expression_bodied_methods = when_possible:suggestion
+csharp_style_expression_bodied_properties = when_possible:suggestion
+csharp_style_expression_bodied_ctors = when_possible:suggestion
+
+# Prefer pattern matching
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+
+# Prefer switch expressions
+csharp_style_prefer_switch_expression = true:suggestion
+
+# Prefer using declaration
+csharp_style_prefer_simple_using_statement = true:suggestion
+
+# Prefer discard for unused values
+csharp_style_prefer_discard = true:suggestion
+
+# Prefer interpolated strings
+csharp_style_prefer_interpolated_string = true:suggestion
+
+# Prefer object/collection initializers
+csharp_style_collection_initializer = true:suggestion
+csharp_style_object_initializer = true:suggestion
+
+# Prefer null propagation
+csharp_style_conditional_delegate_call = true:suggestion
+
+# Prefer static local functions
+csharp_style_prefer_static_local_function = true:suggestion
+
+# Prefer top-level statements for simple programs
+csharp_style_prefer_top_level_statements = true:suggestion
+
+# Prefer file-local types
+csharp_style_prefer_file_local_type = true:suggestion
+
+# Prefer primary constructors
+csharp_style_prefer_primary_constructors = true:suggestion
+
+# Prefer required members
+csharp_style_prefer_required_member = true:suggestion
+
+# Prefer collection expressions
+csharp_style_prefer_collection_expression = true:suggestion
+
+# Prefer target-typed new
+csharp_style_prefer_target_typed_new = true:suggestion
+
+# Prefer tuple names
+csharp_style_prefer_tuple_names = true:suggestion
+
+# Prefer deconstruction
+csharp_style_prefer_deconstructed_variable_declaration = true:suggestion
+
+# Prefer null-coalescing assignment
+csharp_style_prefer_null_coalescing_assignment = true:suggestion
+
+# Prefer using directives inside namespaces
+dotnet_sort_system_directives_first = true
+csharp_using_directive_placement = inside_namespace:suggestion
+
+# Analyzer rules for modern C#
+dotnet_diagnostic.IDE0005.severity = warning   # Unnecessary usings

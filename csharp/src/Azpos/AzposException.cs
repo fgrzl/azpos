@@ -1,9 +1,3 @@
-using System;
+namespace Azpos;
 
-namespace Azpos
-{
-    public class AzposException : Exception
-    {
-        public AzposException(string message) : base(message) { }
-    }
-}
+public class AzposException(string message) : Exception(message);

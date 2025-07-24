@@ -30,7 +30,6 @@ obj/
 *.dylib
 *.test
 *.out
-go.sum
 
 # C#
 *.suo
@@ -66,22 +65,3 @@ hs_err_pid*
 
 # Rust
 /target/
-Cargo.lock
-**/*.rs.bk
-
-# Testing and coverage
-coverage/
-*.lcov
-.nyc_output/
-coverage.out
-
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Environment files
-.env
-.env.local
-.env.*.local

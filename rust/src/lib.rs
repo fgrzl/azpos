@@ -28,15 +28,10 @@ impl std::fmt::Display for AzposError {
 
 impl std::error::Error for AzposError {}
 
-/// Return lexicographic midpoint between a and b, enforcing a < pos < b
-pub fn midpoint(a: &str, b: &str) -> Result<String, AzposError> {
-    if a == b {
-        return Err(AzposError::EqualInputs);
-    }
-
-    if compare(a, b) != Ordering::Less {
-        return Err(AzposError::InvalidOrder);
-    }
+/// Not implemented stub for midpoint
+pub fn midpoint(_a: &str, _b: &str) -> Result<String, AzposError> {
+    Err(AzposError::InvalidState)
+}
 
     // Handle empty string case
     if a.is_empty() {
