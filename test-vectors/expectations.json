@@ -1,0 +1,62 @@
+{
+  "midpoint": {
+    "positive": [
+      { "a": "a", "b": "z", "expected": "az" },
+      { "a": "az", "b": "bz", "expected": "bm" },
+      { "a": "a", "b": "ab", "expected": "am" },
+      { "a": "aaa", "b": "aab", "expected": "aaam" },
+      { "a": "", "b": "a", "expected": "am" },
+      { "a": "a", "b": "aaz", "expected": "aam" },
+      { "a": "a", "b": "aaaaaaaaz", "expected": "aaaaaaaam" },
+      { "a": "aaaaaaaay", "b": "aaaaaaaaz", "expected": "aaaaaaaaym" },
+      { "a": "abc", "b": "abd", "expected": "abcm" },
+      { "a": "m", "b": "n", "expected": "mm" },
+      { "a": "a", "b": "aa", "expected": "am" },
+      { "a": "a", "b": "b", "expected": "am" },
+      { "a": "y", "b": "z", "expected": "ym" }
+    ],
+    "negative": [
+      { "a": "a", "b": "a", "error": "equal inputs" },
+      { "a": "abc", "b": "abc", "error": "equal inputs" },
+      { "a": "aaaaaaaaaaaaaaaaaaaaaaaay", "b": "aaaaaaaaaaaaaaaaaaaaaaaay", "error": "no midpoint" }
+    ]
+  },
+  "validate": {
+    "positive": [
+      { "pos": "abc" },
+      { "pos": "", "desc": "empty string" }
+    ],
+    "negative": [
+      { "pos": "z", "error": "reserved position" },
+      { "pos": "ABC", "error": "uppercase not allowed" },
+      { "pos": "ab1", "error": "non-alphabetic character" },
+      { "pos": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "error": "exceeds max length" },
+      { "pos": "a", "error": "reserved lower bound" }
+    ]
+  },
+  "needsRebalance": {
+    "positive": [
+      { "a": "aaaaaaaaaaaaaaaaaaaaaaaay", "b": "aaaaaaaaaaaaaaaaaaaaaaaaz" }
+    ],
+    "negative": [
+      { "a": "a", "b": "z" },
+      { "a": "a", "b": "aa" },
+      { "a": "y", "b": "z" }
+    ]
+  },
+  "rebalance3": [
+    { "a": "a", "c": "z", "expected": ["ah", "ap", "ax"] },
+    { "a": "aa", "c": "az", "expected": ["aah", "aap", "aax"] }
+  ],
+  "compare": [
+    { "a": "a", "b": "b", "result": -1 },
+    { "a": "b", "b": "a", "result": 1 },
+    { "a": "a", "b": "a", "result": 0 },
+    { "a": "aa", "b": "ab", "result": -1 },
+    { "a": "abc", "b": "abd", "result": -1 }
+  ],
+  "reserved": [
+    { "assigned": "a", "error": "reserved position: lower bound" },
+    { "assigned": "z", "error": "reserved position: upper bound" }
+  ]
+}

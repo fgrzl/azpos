@@ -1,0 +1,26 @@
+[package]
+name = "azpos"
+version = "1.0.0"
+edition = "2021"
+authors = ["Your Name <your.email@example.com>"]
+description = "Rust implementation of azimuthal position calculations"
+license = "MIT"
+repository = "https://github.com/fgrzl/azpos"
+keywords = ["azimuth", "position", "geospatial", "coordinates"]
+categories = ["science", "mathematics"]
+readme = "README.md"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+
+[dev-dependencies]
+serde_json = "1.0"
+approx = "0.5"
+
+[lib]
+name = "azpos"
+path = "src/lib.rs"
+
+[[example]]
+name = "basic"
+path = "examples/basic.rs"
