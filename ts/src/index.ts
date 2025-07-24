@@ -52,39 +52,53 @@ export function midpoint(a: string, b: string, isTopLevel = true): string {
   if (aSuffix.length > 0 && bSuffix.length > 0) {
     const aChar = aSuffix.charCodeAt(0);
     const bChar = bSuffix.charCodeAt(0);
-    // If suffixes are length 1
-    if (aSuffix.length === 1 && bSuffix.length === 1) {
-      if (bChar - aChar === 1) {
-        return prefix + aSuffix[0] + 'm';
-      } else {
-        if (isTopLevel) throw new AzposError('no midpoint');
-        return '';
-      }
-    }
-    // If adjacent, check if the rest is the adjacent last char case
-    if (aSuffix.length === bSuffix.length && aSuffix.length > 0) {
-      const subPrefix = aSuffix.slice(0, -1);
-      const aLast = aSuffix.charCodeAt(aSuffix.length - 1);
-      const bLast = bSuffix.charCodeAt(bSuffix.length - 1);
-      if (subPrefix === bSuffix.slice(0, -1) && bLast - aLast === 1) {
-        return prefix + subPrefix + aSuffix[aSuffix.length - 1] + 'm';
-      }
-    }
+    
     // If chars are not adjacent, use midpoint char
     if (bChar - aChar > 1) {
       const midChar = String.fromCharCode(aChar + Math.floor((bChar - aChar) / 2));
       return prefix + midChar + 'm';
     }
-    // Only recurse if both suffixes are longer than 1 and not adjacent
-    if (aSuffix.length > 1 && bSuffix.length > 1) {
-      const rec = midpoint(aSuffix.slice(1), bSuffix.slice(1), false);
-      if (rec === '') {
-        if (isTopLevel) throw new AzposError('no midpoint');
-        return '';
+    
+    // Characters are adjacent (diff = 1), need to handle carefully
+    if (bChar - aChar === 1) {
+      // If both suffixes are length 1, return prefix + aChar + 'm'
+      if (aSuffix.length === 1 && bSuffix.length === 1) {
+        return prefix + aSuffix[0] + 'm';
       }
-      return prefix + aSuffix[0] + rec;
+      
+      // For longer suffixes, prefer the simpler solution when possible
+      if (aSuffix.length > 1 && bSuffix.length > 1) {
+        const restA = aSuffix.slice(1);
+        const restB = bSuffix.slice(1);
+        
+        // If rest of strings are equal, we can either extend from aChar or use bChar + 'm'
+        if (restA === restB) {
+          // Prefer the shorter solution: bChar + 'm' over aChar + rest + 'm'
+          return prefix + bSuffix[0] + 'm';
+        }
+        
+        // Try recursion to find midpoint in the rest
+        try {
+          const rec = midpoint(restA, restB, false);
+          if (rec !== '') {
+            // Use the lower character (aChar) and append the recursive result
+            return prefix + aSuffix[0] + rec;
+          }
+        } catch {
+          // Recursion failed
+        }
+        
+        // If recursion failed, use bChar + 'm'
+        return prefix + bSuffix[0] + 'm';
+      }
+      
+      // For unequal length suffixes, try to use bChar as base
+      if (aSuffix.length !== bSuffix.length) {
+        return prefix + bSuffix[0] + 'm';
+      }
     }
-    // If we can't recurse, no midpoint
+    
+    // If we can't find a midpoint
     if (isTopLevel) throw new AzposError('no midpoint');
     return '';
   }
@@ -121,8 +135,9 @@ export function validate(pos: string): boolean {
 export function needsRebalance(a: string, b: string): boolean {
   try {
     const mid = midpoint(a, b);
-    // Rebalance if midpoint is not valid or length is at or above MAX_LENGTH
-    return !validate(mid) || mid.length >= MAX_LENGTH;
+    // Rebalance if midpoint is not valid or if we're getting close to MAX_LENGTH
+    // We use a more conservative threshold to prevent getting too close to the limit
+    return !validate(mid) || mid.length >= MAX_LENGTH - 6;
   } catch {
     return true;
   }
