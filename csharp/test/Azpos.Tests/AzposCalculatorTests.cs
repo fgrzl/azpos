@@ -1,10 +1,7 @@
-namespace fgrzl.azpos;
-
-using System.Collections.Generic;
-using System.IO;
 using System.Text.Json;
-using Azpos;
 using Xunit;
+
+namespace fgrzl.azpos;
 
 public class AzposVectorsTests
 {
@@ -28,7 +25,7 @@ public class AzposVectorsTests
 
         // 2. Traverse up to find repo-root .test-vectors/expectations.json
         var dir = outputDir;
-        for (var i = 0; i < 8; i++) // go up to 8 levels up
+        for (var i = 0; i < 8; i++)
         {
             var candidate = Path.Combine(dir, ".test-vectors", "expectations.json");
             if (File.Exists(candidate))
@@ -36,7 +33,8 @@ public class AzposVectorsTests
             dir = Path.GetDirectoryName(dir.TrimEnd(Path.DirectorySeparatorChar));
             if (string.IsNullOrEmpty(dir)) break;
         }
-        throw new FileNotFoundException("Could not find expectations.json from output dir or repo root. Checked from: " + AppContext.BaseDirectory);
+
+        throw new FileNotFoundException($"Could not find expectations.json from output dir or repo root. Checked from: {AppContext.BaseDirectory}");
     }
 
     [Theory]
@@ -49,15 +47,11 @@ public class AzposVectorsTests
 
     public static IEnumerable<object[]> GetMidpointPositive()
     {
-        foreach (var item in Vectors.GetProperty("midpoint").GetProperty("positive").EnumerateArray())
-        {
-            yield return new object[]
-            {
-                item.GetProperty("a").GetString(),
-                item.GetProperty("b").GetString(),
-                item.GetProperty("expected").GetString()
-            };
-        }
+        return Vectors.GetProperty("midpoint").GetProperty("positive").EnumerateArray().Select(item => (object[])[
+            item.GetProperty("a").GetString(),
+            item.GetProperty("b").GetString(),
+            item.GetProperty("expected").GetString()
+        ]);
     }
 
     [Theory]
@@ -71,14 +65,11 @@ public class AzposVectorsTests
     public static IEnumerable<object[]> GetMidpointNegative()
     {
         foreach (var item in Vectors.GetProperty("midpoint").GetProperty("negative").EnumerateArray())
-        {
-            yield return new object[]
-            {
+            yield return [
                 item.GetProperty("a").GetString(),
                 item.GetProperty("b").GetString(),
                 item.GetProperty("error").GetString()
-            };
-        }
+            ];
     }
 
     [Theory]
@@ -90,10 +81,7 @@ public class AzposVectorsTests
 
     public static IEnumerable<object[]> GetValidatePositive()
     {
-        foreach (var item in Vectors.GetProperty("validate").GetProperty("positive").EnumerateArray())
-        {
-            yield return new object[] { item.GetProperty("pos").GetString() };
-        }
+        return Vectors.GetProperty("validate").GetProperty("positive").EnumerateArray().Select(item => (object[])[item.GetProperty("pos").GetString()]);
     }
 
     [Theory]
@@ -106,14 +94,10 @@ public class AzposVectorsTests
 
     public static IEnumerable<object[]> GetValidateNegative()
     {
-        foreach (var item in Vectors.GetProperty("validate").GetProperty("negative").EnumerateArray())
-        {
-            yield return new object[]
-            {
-                item.GetProperty("pos").GetString(),
-                item.GetProperty("error").GetString()
-            };
-        }
+        return Vectors.GetProperty("validate").GetProperty("negative").EnumerateArray().Select(item => (object[])[
+            item.GetProperty("pos").GetString(),
+            item.GetProperty("error").GetString()
+        ]);
     }
 
     [Theory]
@@ -126,14 +110,10 @@ public class AzposVectorsTests
 
     public static IEnumerable<object[]> GetCompareVectors()
     {
-        foreach (var item in Vectors.GetProperty("compare").EnumerateArray())
-        {
-            yield return new object[]
-            {
-                item.GetProperty("a").GetString(),
-                item.GetProperty("b").GetString(),
-                item.GetProperty("result").GetInt32()
-            };
-        }
+        return Vectors.GetProperty("compare").EnumerateArray().Select(item => (object[])[
+            item.GetProperty("a").GetString(),
+            item.GetProperty("b").GetString(),
+            item.GetProperty("result").GetInt32()
+        ]);
     }
 }
