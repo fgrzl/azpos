@@ -3,7 +3,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { midpoint, validate, needsRebalance, rebalance3, compare } from '../src/index';
-import expectations from '../../test-vectors/expectations.json';
+import expectations from '../../.test-vectors/expectations.json';
 
 type MidpointCase = { a: string; b: string; expected?: string; error?: string };
 type ValidateCase = { pos: string; desc?: string; error?: string };
