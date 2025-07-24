@@ -52,31 +52,31 @@ export function midpoint(a: string, b: string, isTopLevel = true): string {
   if (aSuffix.length > 0 && bSuffix.length > 0) {
     const aChar = aSuffix.charCodeAt(0);
     const bChar = bSuffix.charCodeAt(0);
-    
+
     // If chars are not adjacent, use midpoint char
     if (bChar - aChar > 1) {
       const midChar = String.fromCharCode(aChar + Math.floor((bChar - aChar) / 2));
       return prefix + midChar + 'm';
     }
-    
+
     // Characters are adjacent (diff = 1), need to handle carefully
     if (bChar - aChar === 1) {
       // If both suffixes are length 1, return prefix + aChar + 'm'
       if (aSuffix.length === 1 && bSuffix.length === 1) {
         return prefix + aSuffix[0] + 'm';
       }
-      
+
       // For longer suffixes, prefer the simpler solution when possible
       if (aSuffix.length > 1 && bSuffix.length > 1) {
         const restA = aSuffix.slice(1);
         const restB = bSuffix.slice(1);
-        
+
         // If rest of strings are equal, we can either extend from aChar or use bChar + 'm'
         if (restA === restB) {
           // Prefer the shorter solution: bChar + 'm' over aChar + rest + 'm'
           return prefix + bSuffix[0] + 'm';
         }
-        
+
         // Try recursion to find midpoint in the rest
         try {
           const rec = midpoint(restA, restB, false);
@@ -87,17 +87,17 @@ export function midpoint(a: string, b: string, isTopLevel = true): string {
         } catch {
           // Recursion failed
         }
-        
+
         // If recursion failed, use bChar + 'm'
         return prefix + bSuffix[0] + 'm';
       }
-      
+
       // For unequal length suffixes, try to use bChar as base
       if (aSuffix.length !== bSuffix.length) {
         return prefix + bSuffix[0] + 'm';
       }
     }
-    
+
     // If we can't find a midpoint
     if (isTopLevel) throw new AzposError('no midpoint');
     return '';
@@ -142,8 +142,6 @@ export function needsRebalance(a: string, b: string): boolean {
     return true;
   }
 }
-
-
 
 /**
  * Return 3 evenly spaced values between "a" and "z"
