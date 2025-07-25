@@ -44,6 +44,22 @@ public static class AzposCalculator
     }
 
     /// <summary>
+    ///     Validates an azpos position string. Returns true if valid, false otherwise.
+    /// </summary>
+    public static bool IsValid(string? pos)
+    {
+        try
+        {
+            Validate(pos);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
     ///     Return lexicographic midpoint between a and b, enforcing a < pos < b
     /// </summary>
     public static string Midpoint(string? a, string? b)
@@ -159,22 +175,49 @@ public static class AzposCalculator
     /// </summary>
     public static string[] ReBalance(string? a, string? c)
     {
-        if (string.IsNullOrEmpty(a) || string.IsNullOrEmpty(c))
-            return [
-                $"{a ?? string.Empty}h",
-                $"{a ?? string.Empty}p",
-                $"{a ?? string.Empty}x"
-            ];
-
-        var aChar = a[0];
-        var cChar = c[0];
-        var segment = (cChar - aChar) / 4;
-
+        // For azpos, rebalance3 returns evenly spaced values between a and c, using 'h', 'p', 'x'
+        if (a is null || c is null)
+            throw new AzposException("null input");
+        
+        if (a.Length != c.Length)
+            throw new AzposException("rebalance3: a and c must be same length");
+        
+        var baseStr = a;
         return [
-            $"{aChar}{(char)('a' + segment)}h",
-            $"{aChar}{(char)('a' + segment * 2)}p",
-            $"{aChar}{(char)('a' + segment * 3)}x"
+            $"{baseStr}h",
+            $"{baseStr}p", 
+            $"{baseStr}x"
         ];
+    }
+
+    /// <summary>
+    ///     Return 3 evenly spaced values between a and c (alias for ReBalance)
+    /// </summary>
+    public static string[] Rebalance3(string? a, string? c) => ReBalance(a, c);
+
+    /// <summary>
+    ///     True if midpoint would exceed length or conflict
+    /// </summary>
+    public static bool NeedsRebalance(string? a, string? b)
+    {
+        try
+        {
+            var mid = Midpoint(a, b);
+            // Rebalance if midpoint is not valid or if we're getting close to MaxLength
+            try
+            {
+                Validate(mid);
+                return mid.Length >= MaxLength - 6;
+            }
+            catch
+            {
+                return true;
+            }
+        }
+        catch
+        {
+            return true;
+        }
     }
 
     /// <summary>
